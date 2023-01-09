@@ -93,6 +93,11 @@ impl RouteManager {
         Ok(manager)
     }
 
+    #[cfg(not(windows))]
+    pub fn new() -> io::Result<Self> {
+        Err(io::Error::new(io::ErrorKind::Other, "None windows system not supported"))
+    }
+
     /// Driven subscribe event, you should run in separate thread or async task
     /// # Examples
     ///
@@ -233,9 +238,3 @@ impl Drop for RouteManager {
 unsafe impl Sync for RouteManager {}
 
 unsafe impl Send for RouteManager {}
-
-#[cfg(test)]
-mod test_manager {
-    #[test]
-    fn test_multi_thread_add_listener() {}
-}

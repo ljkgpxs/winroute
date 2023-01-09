@@ -61,6 +61,8 @@
 
 mod manager;
 mod route;
+
+#[cfg(windows)]
 mod windows;
 
 pub use manager::RouteEvent;
