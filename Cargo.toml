@@ -1,6 +1,6 @@
 [package]
 name = "winroute"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 author = "ljkgpxs <ljkgpxs@gmail.com>"
 description = "This crate is a utilities of high level of interface for manipulating and observing Windows's routing table"
