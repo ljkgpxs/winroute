@@ -50,7 +50,7 @@ pub enum RouteEvent {
 /// 
 /// # Examples
 ///
-/// ```
+/// ```rust
 /// let manager = RouteManager::new()?;
 /// let routes = manager.routes()?;
 /// println!("Routes count: {}", routes.len());
@@ -101,7 +101,7 @@ impl RouteManager {
     /// Driven subscribe event, you should run in separate thread or async task
     /// # Examples
     ///
-    /// ```
+    /// ```rust
     /// use std::sync::Arc;
     /// use winroute::{Route, RouteManager};
     /// 
@@ -109,13 +109,13 @@ impl RouteManager {
     /// let poll = manager.clone();
     /// ```
     ///
-    /// ```
+    /// ```rust
     /// std::thread::spawn(move || loop {
     ///    poll.poll();
     /// });
     /// ```
     /// or
-    /// ```
+    /// ```rust
     /// tokio::spawn(async move {
     ///     loop {
     ///         poll.poll();
