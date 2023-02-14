@@ -40,3 +40,6 @@ loop {
     println!("{:?}", event);
 }
 ```
+
+# Features
+* `serializable`: This feature is enabled by default, it implemented `serde`'s `Serialize` and `Deserialize`, this feature requires an additional dependency on `serde`
