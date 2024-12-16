@@ -244,7 +244,9 @@ unsafe extern "system" fn callback(
         n if n == MibDeleteInstance => RouteEvent::Delete(route),
         _ => return,
     };
-    sender.send(event).unwrap();
+    if let Err(_) = sender.send(event) {
+        // If there is no receiver, this may indicate that the system is currently shutting down
+    }
 }
 
 fn code_to_error(code: u32, msg: &str) -> io::Error {
