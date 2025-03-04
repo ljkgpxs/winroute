@@ -1,3 +1,7 @@
+# 0.2.1
+
+* Update to Rust 2024 edition
+
 # 0.2.0
 
 * fixed: cargo test failed
