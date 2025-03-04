@@ -132,7 +132,7 @@ impl RouteManager {
     pub fn poll(&self) -> Result<(), Box<dyn Error>> {
         let event: RouteEvent = self.operator_receiver.recv()?;
         {
-            if let Ok(guard) = self.routes.lock() {
+            match self.routes.lock() { Ok(guard) => {
                 let mut routes = guard.borrow_mut();
                 match event.clone() {
                     RouteEvent::Add(route) => routes.push(route),
@@ -150,11 +150,11 @@ impl RouteManager {
                         }
                     }
                 }
-            } else {
+            } _ => {
                 return Err(Box::new(PoisonError::new(
                     "Can not lock private field routes",
                 )));
-            }
+            }}
         }
         if let Err(e) = self.producer.send(event.clone()) {
             return Err(Box::new(e));
@@ -174,11 +174,11 @@ impl RouteManager {
     /// # Errors
     /// When try to lock Mutex and it return an error
     pub fn routes(&self) -> io::Result<Vec<Route>> {
-        if let Ok(guard) = self.routes.lock() {
+        match self.routes.lock() { Ok(guard) => {
             Ok(guard.borrow_mut().clone())
-        } else {
+        } _ => {
             Err(io::Error::new(io::ErrorKind::Other, "Can not lock inner data, this is a thread safe error"))
-        }
+        }}
     }
 
     /// Add a new route to system's routing table
@@ -212,7 +212,7 @@ impl RouteManager {
     /// # Errors
     /// When try to lock Mutex and it return an error
     pub fn default_route(&self) -> io::Result<Option<Route>> {
-        if let Ok(guard) = self.routes.lock() {
+        match self.routes.lock() { Ok(guard) => {
             let guard = guard.borrow_mut();
             let itr = guard.iter();
             for route in itr {
@@ -225,12 +225,12 @@ impl RouteManager {
                     return Ok(Some(route.clone()));
                 }
             }
-        } else {
+        } _ => {
             return Err(io::Error::new(
                 io::ErrorKind::NotFound,
                 "can not found defualt route",
             ));
-        }
+        }}
         Ok(None)
     }
 }

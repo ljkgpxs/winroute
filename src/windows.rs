@@ -230,21 +230,23 @@ impl From<&Route> for MIB_IPFORWARD_ROW2 {
     }
 }
 
-unsafe extern "system" fn callback(
+extern "system" fn callback(
     callercontext: PVOID,
     row: PMIB_IPFORWARD_ROW2,
     notification_type: MIB_NOTIFICATION_TYPE,
 ) {
-    // let tx = &*(callercontext as *const broadcast::Sender<RouteChange>);
-    let route = Route::from(&*row);
-    let sender: &Sender<RouteEvent> = std::mem::transmute(callercontext);
-    let event = match notification_type {
-        n if n == MibParameterNotification => RouteEvent::Change(route),
-        n if n == MibAddInstance => RouteEvent::Add(route),
-        n if n == MibDeleteInstance => RouteEvent::Delete(route),
-        _ => return,
-    };
-    sender.send(event).unwrap();
+    unsafe {
+        // let tx = &*(callercontext as *const broadcast::Sender<RouteChange>);
+        let route = Route::from(&*row);
+        let sender: &Sender<RouteEvent> = std::mem::transmute(callercontext);
+        let event = match notification_type {
+            n if n == MibParameterNotification => RouteEvent::Change(route),
+            n if n == MibAddInstance => RouteEvent::Add(route),
+            n if n == MibDeleteInstance => RouteEvent::Delete(route),
+            _ => return,
+        };
+        sender.send(event).unwrap();
+    }
 }
 
 fn code_to_error(code: u32, msg: &str) -> io::Error {
