@@ -32,7 +32,7 @@ pub(crate) trait SystemRouteOperate {
     fn new(sender: Sender<RouteEvent>) -> Self
     where
         Self: Sized;
-    fn init(&self) -> io::Result<()>;
+    fn init(&mut self) -> io::Result<()>;
     fn read_all_routes(&self) -> io::Result<Vec<Route>>;
     fn add_route(&self, route: &Route) -> io::Result<()>;
     fn delete_route(&self, route: &Route) -> io::Result<()>;
@@ -82,7 +82,7 @@ impl RouteManager {
 
         let (tx, rx) = crossbeam_channel::unbounded();
         let (tx_loop, rx_loop) = crossbeam_channel::unbounded();
-        let operator = Box::new(WindowsOperator::new(tx));
+        let mut operator = Box::new(WindowsOperator::new(tx));
         operator.init()?;
         let routes = operator.read_all_routes().unwrap();
 
