@@ -1,3 +1,8 @@
+# 0.2.2
+
+* fix crash with callback context
+* fix unwrap that are triggered on shutdown
+
 # 0.2.1
 
 * Update to Rust 2024 edition
