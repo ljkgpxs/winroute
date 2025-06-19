@@ -21,7 +21,7 @@ crossbeam-channel = "0.5"
 serde = {version = "1.0", features = ["derive"], optional = true}
 
 [target.'cfg(windows)'.dependencies]
-winapi = { version = "0.3", features = ["iphlpapi", "netioapi"] }
+windows = { version = "0.59.0" , features = ["Win32_Networking_WinSock", "Win32_NetworkManagement_IpHelper", "Win32_NetworkManagement_Ndis"]}
 
 [dev-dependencies]
 serde_json = {version = "1.0"}
